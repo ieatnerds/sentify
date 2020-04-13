@@ -49,65 +49,65 @@ class SpotifyBackgroundColor():
             #                       interp='bilinear')
 
 
-    # def dbscan_best_color(self, color_tol = 10, plot = False):
-    #     artwork = self.img.copy()
-    #     self.img = self.img.reshape((self.img.shape[0]*self.img.shape[1], 3))
+    def dbscan_best_color(self, eps = 0.3, color_tol = 10, plot = False):
+        artwork = self.img.copy()
+        self.img = self.img.reshape((self.img.shape[0]*self.img.shape[1], 3))
 
-    #     clt = DBSCAN(eps=50.0, min_samples = 20, n_jobs=4)
-    #     clt.fit(self.img)
-    #     hist = self.find_histogram(clt)
-    #     #print(clt)
-    #     centroids = clt.components_
-    #     new_array = [tuple(row) for row in centroids]
-    #     uniquecent = np.unique(new_array,axis=0)
-    #     #print(centroids)
-    #     #print(clt.labels_)
-    #     print(centroids, "\n\n")
-    #     print(uniquecent)
+        clt = DBSCAN(eps=eps, min_samples = 20, n_jobs=4)
+        clt.fit(self.img)
+        hist = self.find_histogram(clt)
+        #print(clt)
+        centroids = clt.components_
+        new_array = [tuple(row) for row in centroids]
+        uniquecent = np.unique(new_array,axis=0)
+        #print(centroids)
+        #print(clt.labels_)
+        print(centroids, "\n\n")
+        print(uniquecent)
 
-    #     colorfulness = [self.colorfulness(color[0], color[1], color[2]) for color in uniquecent]
-    #     max_colorful = np.max(colorfulness)
+        colorfulness = [self.colorfulness(color[0], color[1], color[2]) for color in uniquecent]
+        max_colorful = np.max(colorfulness)
 
-    #     if max_colorful < color_tol:
-    #         # If not colorful, set to gray
-    #         best_color = [230, 230, 230]
-    #     else:
-    #         # Pick the most colorful color
-    #         best_color = uniquecent[np.argmax(colorfulness)]
+        if max_colorful < color_tol:
+            # If not colorful, set to gray
+            best_color = [230, 230, 230]
+        else:
+            # Pick the most colorful color
+            best_color = uniquecent[np.argmax(colorfulness)]
 
-    #     if plot:
-    #         bar = np.zeros((50, 300, 3), dtype='uint8')
-    #         square = np.zeros((50, 50, 3), dtype='uint8')
-    #         start_x = 0
+        if plot:
+            bar = np.zeros((50, 300, 3), dtype='uint8')
+            square = np.zeros((50, 50, 3), dtype='uint8')
+            start_x = 0
 
-    #         for (percent, color) in zip(hist, uniquecent):
-    #             # Plot the relative percentage of each cluster
-    #             end_x = start_x + (percent * 300)
-    #             bar[:, int(start_x):int(end_x)] = color
-    #             start_x = end_x
-    #         square[:] = best_color
+            for (percent, color) in zip(hist, uniquecent):
+                # Plot the relative percentage of each cluster
+                end_x = start_x + (percent * 300)
+                bar[:, int(start_x):int(end_x)] = color
+                start_x = end_x
+            square[:] = best_color
 
-    #         plt.figure()
-    #         plt.subplot(1, 3, 1)
-    #         plt.title('Artwork')
-    #         plt.axis('off')
-    #         plt.imshow(artwork)
+            plt.figure()
+            plt.subplot(1, 3, 1)
+            plt.title('Artwork')
+            plt.axis('off')
+            plt.imshow(artwork)
 
-    #         plt.subplot(1, 3, 2)
-    #         plt.title('k')
-    #         plt.axis('off')
-    #         plt.imshow(bar)
+            plt.subplot(1, 3, 2)
+            plt.title('k')
+            plt.axis('off')
+            plt.imshow(bar)
 
-    #         plt.subplot(1, 3, 3)
-    #         plt.title('Color {}'.format(square[0][0]))
-    #         plt.axis('off')
-    #         plt.imshow(square)
-    #         plt.tight_layout()
+            plt.subplot(1, 3, 3)
+            plt.title('Color {}'.format(square[0][0]))
+            plt.axis('off')
+            plt.imshow(square)
+            plt.tight_layout()
 
-    #         plt.plot()
-    #         plt.show(block=False)
+            plt.plot()
+            plt.show(block=False)
 
-    #     return best_color[0], best_color[1], best_color[2]
+        return best_color[0], best_color[1], best_color[2]
 
     def best_color(self, k=8, color_tol=10, plot=False):
         """Returns a suitable background color for the given image.

@@ -128,7 +128,7 @@ def main(k, color_tol, size):
                         start_time = datetime.now()
                         artwork = spotify.get_artwork()
                         background_color = SpotifyBackgroundColor(img=artwork, image_processing_size=size)
-                        r, g, b = background_color.best_color(k=8, color_tol=10)
+                        r, g, b = background_color.dbscan_best_color()
                         r, g, b = str(int(round(r))), str(int(round(g))), str(int(round(b)))
         
                         rgbrep = str(r) + " " + str(g) + " " + str(b)
